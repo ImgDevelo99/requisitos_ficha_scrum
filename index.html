@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Elicitación de Requisitos: Técnicas de Documentación</title>
+    <style>
+        /* Estilos Generales y Reseteo Básico */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Encabezado Principal */
+        header {
+            background-color: #003366; /* Azul oscuro del SENA */
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky; /* Permanece en la parte superior al hacer scroll */
+            top: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+        }
+
+        header img {
+            height: 40px; /* Tamaño del logo */
+            width: auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+
+        /* Contenedor Principal de la Aplicación */
+        #app-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Para que el shadow se vea bien en los bordes */
+            min-height: calc(100vh - 100px); /* Ajusta la altura mínima para que ocupe casi toda la pantalla */
+        }
+
+        /* Barra de Navegación Lateral */
+        nav {
+            width: 250px;
+            background-color: #f0f3f2;
+            padding: 20px 0;
+            border-right: 1px solid #e0e0e0;
+            flex-shrink: 0; /* Evita que se encoja */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin-bottom: 5px;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-left: 5px solid transparent; /* Para el indicador de activo */
+        }
+
+        nav ul li a:hover {
+            background-color: #e6e9e8;
+            color: #003366;
+        }
+
+        nav ul li a.active {
+            background-color: #d1e7dd; /* Un verde claro para activo */
+            color: #003366;
+            border-left-color: #28a745; /* Verde más oscuro para el borde */
+            font-weight: 600;
+        }
+
+        /* Contenido Principal de las Secciones */
+        main {
+            flex-grow: 1; /* Ocupa el espacio restante */
+            padding: 30px;
+            overflow-y: auto; /* Permite scroll si el contenido es largo */
+        }
+
+        .content-section {
+            display: none; /* Por defecto, todas las secciones ocultas */
+            padding: 20px 0;
+        }
+
+        .content-section.active {
+            display: block; /* La sección activa se muestra */
+        }
+
+        h2 {
+            color: #003366;
+            border-bottom: 2px solid #28a745; /* Verde para los títulos de sección */
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #28a745;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        strong {
+            color: #003366;
+        }
+
+        ul.list-disc {
+            list-style: disc;
+            padding-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Demostración Visual (simulada con <pre>) */
+        .visual-demo {
+            background-color: #f0f0f0;
+            border: 1px dashed #ccc;
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto; /* Para contenido ancho que desborde */
+            white-space: pre-wrap; /* Mantiene el formato pero permite wrapping */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #000;
+            border-radius: 5px;
+        }
+
+        /* Ejercicios Interactivos */
+        .exercise {
+            background-color: #eef5f3;
+            border: 1px solid #cce5df;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .exercise h4 {
+            color: #003366;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .exercise .question {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .exercise input[type="text"],
+        .exercise select {
+            width: calc(100% - 22px); /* Ancho completo menos padding y borde */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box; /* Incluye padding y border en el ancho */
+        }
+
+        .exercise .radio-group label,
+        .exercise .checkbox-group label {
+            display: block; /* Cada opción en una nueva línea */
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .exercise button {
+            background-color: #28a745; /* Verde para los botones de acción */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .exercise button:hover {
+            background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: block; /* Asegura que ocupe su propia línea */
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Botones de Navegación de Sección (Anterior/Siguiente) */
+        .section-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .section-nav-buttons button {
+            background-color: #0056b3; /* Azul más oscuro */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-nav-buttons button:hover {
+            background-color: #004085;
+        }
+
+        .section-nav-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Pie de Página */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: #eee;
+            color: #555;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.postimg.cc/mZzx20gW/Logosimbolo-SENA-PRINCIPAL.png" alt="Logo SENA">
+        <h1>Centro de Servicios y Gestión Empresarial</h1>
+    </header>
+
+    <div id="app-container">
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="#" data-section="intro" class="active">1. Introducción</a></li>
+                <li><a href="#" data-section="cuestionario">2. Cuestionario</a></li>
+                <li><a href="#" data-section="encuesta">3. Encuesta</a></li>
+                <li><a href="#" data-section="observacion">4. Técnicas de Observación</a></li>
+                <li><a href="#" data-section="conclusion">5. Conclusión</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Sección 1: Introducción -->
+            <section id="intro" class="content-section active">
+                <h2>1. Introducción a la Elicitación de Requisitos</h2>
+                <h3>¿Qué es la Elicitación de Requisitos?</h3>
+                <p>La <strong>elicitación de requisitos</strong> es el proceso de descubrir, capturar y entender las necesidades y restricciones de los interesados (stakeholders) para un sistema o proyecto. Es un paso fundamental en el desarrollo de software, ya que un buen entendimiento de los requisitos es la base para construir un producto exitoso.</p>
+                <p>Imagina que estás construyendo una casa. Si no entiendes lo que el cliente quiere (cuántas habitaciones, qué estilo, qué presupuesto), es muy probable que construyas algo que no le sirva. Lo mismo ocurre con el software: <strong>sin requisitos claros, el producto final no cumplirá las expectativas.</strong></p>
+
+                <h3>¿Por qué Técnicas Centradas en la Documentación?</h3>
+                <p>Las técnicas de elicitación de requisitos se clasifican de diversas formas. En esta guía, nos enfocaremos en aquellas <strong>centradas en la documentación</strong>. Esto implica que la información se recopila principalmente a través de textos, formularios, o la observación sistemática que luego se registra detalladamente. Son técnicas muy útiles cuando:</p>
+                <ul class="list-disc">
+                    <li>Se necesita recopilar información de un <strong>gran número de personas</strong>.</li>
+                    <li>Los interesados están <strong>geográficamente dispersos</strong>.</li>
+                    <li>Se necesita una forma <strong>estandarizada y estructurada</strong> de recopilar datos.</li>
+                    <li>El analista no puede interactuar directamente con todos los interesados o necesita observar el <strong>comportamiento real sin intervención</strong>.</li>
+                </ul>
+
+                <div class="exercise">
+                    <h4>Ejercicio 1.1: Comprendiendo el Objetivo</h4>
+                    <p class="question">¿Cuál de las siguientes opciones describe mejor el objetivo principal de la elicitación de requisitos?</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="ej1_q1" value="a"> A) Diseñar la interfaz de usuario del software.</label>
+                        <label><input type="radio" name="ej1_q1" value="b"> B) Entender las necesidades y restricciones de los interesados para un sistema.</label>
+                        <label><input type="radio" name="ej1_q1" value="c"> C) Programar el código fuente del software.</label>
+                        <label><input type="radio" name="ej1_q1" value="d"> D) Probar la funcionalidad del software ya desarrollado.</label>
+                    </div>
+                    <button onclick="checkExercise('ej1_q1', 'b', 'feedback_ej1_q1')">Verificar Respuesta</button>
+                    <p id="feedback_ej1_q1" class="feedback"></p>
+                </div>
+            </section>
+
+            <!-- Sección 2: Cuestionario -->
+            <section id="cuestionario" class="content-section">
+                <h2>2. Cuestionario</h2>
+                <h3>Explicación Teórica</h3>
+                <p>Un <strong>cuestionario</strong> es un conjunto de preguntas escritas que se utilizan para recopilar información específica de un grupo de personas. Se aplica a individuos o pequeños grupos con los que se busca una interacción más personal o detallada, o cuando se necesita información muy particular de cada respondente. Aunque puede parecer similar a una encuesta, el cuestionario a menudo busca una comprensión más profunda de un tema específico con menos participantes.</p>
+                <ul class="list-disc">
+                    <li><strong>Cuándo usar:</strong> Para obtener información detallada de un número limitado de expertos o usuarios clave; para confirmar suposiciones; cuando el tiempo para entrevistas es limitado.</li>
+                    <li><strong>Ventajas:</strong> Permite obtener información detallada, flexibilidad en el tipo de preguntas, relativamente bajo costo de implementación.</li>
+                    <li><strong>Desventajas:</strong> Requiere tiempo para analizar respuestas abiertas, puede ser subjetivo, no apto para grandes muestras.</li>
+                    <li><strong>Tipos de Preguntas:</strong>
+                        <ul class="list-disc">
+                            <li><strong>Abiertas:</strong> Permiten al encuestado expresarse libremente con sus propias palabras (ej: "¿Qué mejoras sugeriría?"). Son útiles para obtener perspectivas cualitativas y no esperadas.</li>
+                            <li><strong>Cerradas:</strong> Restringen las respuestas a opciones predefinidas (ej: "Sí/No", escala Likert, selección múltiple). Facilitan el análisis cuantitativo y la comparación.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Demostración Visual (Ejemplo de Cuestionario)</h3>
+                <div class="visual-demo">
+                    <pre>
+------------------------------------------------------
+|              CUESTIONARIO DE USABILIDAD           |
+|                                                    |
+| Fecha: DD/MM/AAAA                                  |
+| Nombre del Usuario: _________________________      |
+------------------------------------------------------
+
+1. ¿Con qué frecuencia utiliza la aplicación "Gestor de Tareas"?
+   [ ] Diariamente
+   [ ] Semanalmente
+   [ ] Mensualmente
+   [ ] Ocasionalmente
+   [ ] Nunca
+
+2. ¿Qué tan fácil le resulta navegar por las diferentes secciones de la aplicación?
+   [ ] Muy fácil
+   [ ] Fácil
+   [ ] Neutral
+   [ ] Difícil
+   [ ] Muy difícil
+
+3. Describa brevemente las tres funcionalidades que más valora de la aplicación.
+   ____________________________________________________________________
+   ____________________________________________________________________
+   ____________________________________________________________________
+
+4. ¿Qué problemas ha experimentado al usar la aplicación? (Marque todos los que apliquen)
+   [ ] Lentitud en la carga
+   [ ] Errores inesperados
+   [ ] Dificultad para encontrar funciones
+   [ ] Interfaz poco intuitiva
+   [ ] Otro (Especifique): ___________________________________________
+
+5. ¿Qué mejoras o nuevas funcionalidades sugeriría para futuras versiones?
+   ____________________________________________________________________
+   ____________________________________________________________________
+------------------------------------------------------
+                    </pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>Ejercicio 2.1: Tipos de Preguntas</h4>
+                    <p class="question">Considere la siguiente pregunta: "¿Está satisfecho con la velocidad de respuesta del sistema? Sí/No/Parcialmente". ¿Qué tipo de pregunta es esta?</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="ej2_q1" value="a"> A) Abierta</label>
+                        <label><input type="radio" name="ej2_q1" value="b"> B) Cerrada</label>
+                        <label><input type="radio" name="ej2_q1" value="c"> C) De observación</label>
+                        <label><input type="radio" name="ej2_q1" value="d"> D) De discusión</label>
+                    </div>
+                    <button onclick="checkExercise('ej2_q1', 'b', 'feedback_ej2_q1')">Verificar Respuesta</button>
+                    <p id="feedback_ej2_q1" class="feedback"></p>
+                </div>
+            </section>
+
+            <!-- Sección 3: Encuesta -->
+            <section id="encuesta" class="content-section">
+                <h2>3. Encuesta</h2>
+                <h3>Explicación Teórica</h3>
+                <p>Una <strong>encuesta</strong> es un método de recopilación de datos diseñado para obtener información de un gran número de personas (una muestra representativa de una población). A diferencia del cuestionario, que puede ser más profundo y cualitativo en un grupo pequeño, la encuesta busca datos cuantitativos para identificar patrones, tendencias y opiniones a gran escala.</p>
+                <ul class="list-disc">
+                    <li><strong>Cuándo usar:</strong> Para recopilar datos estandarizados de una población grande y diversa; para medir opiniones o preferencias generales; para validar hallazgos de otras técnicas.</li>
+                    <li><strong>Ventajas:</strong> Permite obtener datos cuantitativos y estadísticos, eficiencia para grandes muestras, anonimato que puede fomentar respuestas honestas.</li>
+                    <li><strong>Desventajas:</strong> Menos profundidad en las respuestas, diseño cuidadoso para evitar sesgos, no permite aclaraciones en tiempo real.</li>
+                    <li><strong>Diseño:</strong> Las preguntas suelen ser predominantemente cerradas para facilitar la tabulación y el análisis estadístico, permitiendo la agregación de respuestas.</li>
+                </ul>
+
+                <h3>Demostración Visual (Ejemplo de Resultados de Encuesta)</h3>
+                <div class="visual-demo">
+                    <pre>
+Resultados de la Encuesta de Satisfacción del Cliente (N=500 usuarios)
+--------------------------------------------------------------------
+
+Pregunta: "¿Qué tan satisfecho está con el nuevo portal de clientes?"
+
+Muy Satisfecho: |████████████████████████████████████████ (40%)
+Satisfecho:     |████████████████████████████████ (30%)
+Neutral:        |██████████████ (15%)
+Insatisfecho:   |███████ (10%)
+Muy Insatisfecho:|███ (5%)
+--------------------------------------------------------------------
+
+Pregunta: "¿Cuál es la característica más útil del portal?"
+
+    Acceso a Facturas: |██████████████████████ (55%)
+    Soporte en línea:  |█████████ (25%)
+    Historial de Pedidos:|███████ (20%)
+--------------------------------------------------------------------
+                    </pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>Ejercicio 3.1: Diferencia Clave</h4>
+                    <p class="question">¿Cuál es una diferencia clave entre un <strong>cuestionario</strong> y una <strong>encuesta</strong> en el contexto de la elicitación de requisitos?</p>
+                    <select id="ej3_q1_select">
+                        <option value="">-- Seleccione una opción --</option>
+                        <option value="a">A) El cuestionario es siempre digital, la encuesta es siempre en papel.</option>
+                        <option value="b">B) La encuesta busca datos cuantitativos de una gran muestra, el cuestionario busca información detallada de un grupo más pequeño.</option>
+                        <option value="c">C) El cuestionario solo usa preguntas abiertas, la encuesta solo preguntas cerradas.</option>
+                        <option value="d">D) No hay diferencia, son términos intercambiables.</option>
+                    </select>
+                    <button onclick="checkExercise('ej3_q1_select', 'b', 'feedback_ej3_q1')">Verificar Respuesta</button>
+                    <p id="feedback_ej3_q1" class="feedback"></p>
+                </div>
+            </section>
+
+            <!-- Sección 4: Técnicas de Observación -->
+            <section id="observacion" class="content-section">
+                <h2>4. Técnicas de Observación</h2>
+                <h3>Explicación Teórica</h3>
+                <p>Las <strong>técnicas de observación</strong> implican ver y registrar cómo los usuarios interactúan con un sistema existente (o un prototipo), o cómo realizan sus tareas diarias en su entorno de trabajo, sin que el analista intervenga activamente. Es una técnica valiosa para descubrir requisitos no expresados o para entender el contexto real de uso de un sistema, es decir, <strong>lo que los usuarios realmente hacen, no solo lo que dicen que hacen.</strong></p>
+                <ul class="list-disc">
+                    <li><strong>Cuándo usar:</strong> Cuando los usuarios tienen dificultades para articular sus necesidades; cuando el sistema existente no tiene documentación clara; para entender flujos de trabajo reales y el comportamiento natural; para identificar ineficiencias o errores de usabilidad.</li>
+                    <li><strong>Ventajas:</strong> Revela requisitos implícitos o no verbalizados; reduce la subjetividad de lo que el usuario dice; permite ver el contexto completo de uso; identifica problemas de usabilidad o cuellos de botella.</li>
+                    <li><strong>Desventajas:</strong> Consume mucho tiempo; el observador puede influir en el comportamiento (efecto Hawthorne); los usuarios pueden sentirse incómodos o ansiosos; no es escalable para muchos usuarios simultáneamente.</li>
+                    <li><strong>Tipos:</strong>
+                        <ul class="list-disc">
+                            <li><strong>Pasiva/No Participativa:</strong> El observador no interviene en la actividad del usuario. Simplemente registra lo que ve y oye, sin interactuar.</li>
+                            <li><strong>Participativa:</strong> El observador se involucra en la actividad, quizás realizando tareas junto al usuario o pidiendo explicaciones sobre la marcha para entender mejor los desafíos y el proceso.</li>
+                            <li><strong>Etnográfica:</strong> Inmersión profunda del observador en el entorno del usuario por un periodo prolongado, buscando comprender la cultura, los valores y el contexto completo del trabajo, más allá de tareas específicas.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Demostración Visual (Ejemplo de Escenario de Observación)</h3>
+                <div class="visual-demo">
+                    <pre>
+Escenario de Observación: Gestión de Pedidos en Tienda
+-----------------------------------------------------
+Objetivo: Entender el proceso de registro de un nuevo pedido.
+Fecha: 2023-10-26
+Observador: [Tu Nombre]
+Usuario Observado: Empleado Juan Pérez
+
+Hora | Acción del Usuario        | Observación / Comentario
+-----|---------------------------|----------------------------------
+09:15| Juan abre la aplicación de | Tarda ~5 segundos en cargar.
+     | pedidos en su tablet.     |
+09:16| Intenta buscar un cliente. | Utiliza el campo "Buscar Cliente",
+     |                           | pero no encuentra el nombre completo.
+09:17| Frunce el ceño, murmura.   | Parece frustrado. Se desplaza
+     |                           | por la lista completa de clientes.
+09:19| Encuentra el cliente.      | Le tomó 2 minutos encontrarlo.
+     |                           | Problema potencial con la búsqueda:
+     |                           | ¿filtro insuficiente?
+09:20| Empieza a añadir productos.| Hace clic en "Agregar Producto",
+     |                           | busca por código.
+09:21| Confirma el pedido.        | El sistema pide confirmar dos veces,
+     |                           | Juan parece molesto por la doble
+     |                           | confirmación redundante.
+-----------------------------------------------------
+                    </pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>Ejercicio 4.1: Identificación de Observación</h4>
+                    <p class="question">Un analista de requisitos pasa una semana en el departamento de contabilidad, observando y a veces ayudando a los contadores a realizar sus tareas para comprender sus flujos de trabajo y desafíos. ¿Qué tipo de observación está aplicando?</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="ej4_q1" value="a"> A) Observación Pasiva</label>
+                        <label><input type="radio" name="ej4_q1" value="b"> B) Observación Participativa</label>
+                        <label><input type="radio" name="ej4_q1" value="c"> C) Cuestionario</label>
+                        <label><input type="radio" name="ej4_q1" value="d"> D) Encuesta Etnográfica</label>
+                    </div>
+                    <button onclick="checkExercise('ej4_q1', 'b', 'feedback_ej4_q1')">Verificar Respuesta</button>
+                    <p id="feedback_ej4_q1" class="feedback"></p>
+                </div>
+            </section>
+
+            <!-- Sección 5: Conclusión -->
+            <section id="conclusion" class="content-section">
+                <h2>5. Conclusión</h2>
+                <h3>Resumen y Reflexiones Finales</h3>
+                <p>En esta guía, hemos explorado tres técnicas fundamentales de elicitación de requisitos centradas en la documentación:</p>
+                <ul class="list-disc">
+                    <li><strong>Cuestionario:</strong> Ideal para recopilar información detallada, cualitativa y cuantitativa, de un grupo más pequeño, a menudo con una mezcla de preguntas abiertas y cerradas. Permite profundizar en temas específicos.</li>
+                    <li><strong>Encuesta:</strong> Perfecta para obtener datos cuantitativos y tendencias de una población grande y diversa, utilizando principalmente preguntas cerradas para facilitar el análisis estadístico y la generalización de resultados.</li>
+                    <li><strong>Técnicas de Observación:</strong> Cruciales para descubrir requisitos implícitos y entender el comportamiento real del usuario en su entorno natural, revelando lo que los usuarios hacen en lugar de lo que dicen.</li>
+                </ul>
+                <p>La elección de la técnica adecuada (o la combinación de ellas) depende de varios factores, como el tamaño de la población a consultar, el tipo de información necesaria (cualitativa vs. cuantitativa), los recursos disponibles (tiempo, presupuesto) y el contexto específico del proyecto. A menudo, las mejores estrategias de elicitación de requisitos combinan varias técnicas para obtener una visión completa y robusta de las necesidades del sistema, complementando las debilidades de una técnica con las fortalezas de otra.</p>
+
+                <h3>Demostración Visual (Diagrama de Elección de Técnica Simplificado)</h3>
+                <div class="visual-demo">
+                    <pre>
+FLUJO DE ELECCIÓN DE TÉCNICA (Simplificado)
+
+    +-------------------+
+    |    INICIO         |
+    +---------+---------+
+              |
+              V
+    +-------------------+
+    |  ¿Necesito datos  |
+    |  cuantitativos de |
+    |  una GRAN muestra?|
+    +---------+---------+
+              | Sí
+              V
+    +-------------------+
+    |     ENCUESTA      |
+    +---------+---------+
+              |
+              V
+    +-------------------+
+    |      FIN          |
+    +-------------------+
+
+              ^
+              | No
+    +---------+---------+
+    |  ¿Necesito detalles|
+    |  específicos o     |
+    |  validar con       |
+    |  un PEQUEÑO grupo?|
+    +---------+---------+
+              | Sí
+              V
+    +-------------------+
+    |    CUESTIONARIO   |
+    +---------+---------+
+              |
+              V
+    +-------------------+
+    |      FIN          |
+    +-------------------+
+
+              ^
+              | No
+    +---------+---------+
+    |  ¿Necesito entender|
+    |  comportamientos   |
+    |  reales o procesos |
+    |  no articulados?   |
+    +---------+---------+
+              | Sí
+              V
+    +-------------------+
+    |   OBSERVACIÓN     |
+    +---------+---------+
+              |
+              V
+    +-------------------+
+    |      FIN          |
+    +-------------------+
+
+              ^
+              | No
+              +-----------------------------> Considerar otras técnicas / Combinar
+                    </pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>Ejercicio 5.1: Aplicación de Conocimientos</h4>
+                    <p class="question">Eres un analista de requisitos y necesitas comprender cómo los empleados de una empresa utilizan una nueva herramienta interna que ha sido implementada hace poco, especialmente identificando sus frustraciones y oportunidades de mejora que quizás no sepan expresar directamente. ¿Qué técnica de elicitación de las estudiadas sería la más apropiada para empezar?</p>
+                    <div class="radio-group">
+                        <label><input type="radio" name="ej5_q1" value="a"> A) Encuesta a todos los empleados de la empresa.</label>
+                        <label><input type="radio" name="ej5_q1" value="b"> B) Cuestionario con preguntas muy específicas sobre el diseño de la interfaz.</label>
+                        <label><input type="radio" name="ej5_q1" value="c"> C) Observación de los empleados mientras usan la herramienta en su día a día.</label>
+                        <label><input type="radio" name="ej5_q1" value="d"> D) Ninguna de las anteriores, se necesita una entrevista a cada empleado.</label>
+                    </div>
+                    <button onclick="checkExercise('ej5_q1', 'c', 'feedback_ej5_q1')">Verificar Respuesta</button>
+                    <p id="feedback_ej5_q1" class="feedback"></p>
+                </div>
+            </section>
+
+            <div class="section-nav-buttons">
+                <button id="prevBtn" onclick="navigateSections(-1)" disabled>← Anterior</button>
+                <button id="nextBtn" onclick="navigateSections(1)">Siguiente →</button>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Centro de Servicios y Gestión Empresarial. Guía Interactiva de Elicitación de Requisitos.</p>
+    </footer>
+
+    <script>
+        const sections = Array.from(document.querySelectorAll('.content-section'));
+        const navLinks = Array.from(document.querySelectorAll('#nav-menu a'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSectionIndex = 0;
+
+        /**
+         * Muestra una sección específica de la guía y actualiza la navegación.
+         * @param {number} index El índice de la sección a mostrar.
+         */
+        function showSection(index) {
+            // Ocultar todas las secciones
+            sections.forEach(section => section.classList.remove('active'));
+            // Mostrar la sección activa
+            sections[index].classList.add('active');
+
+            // Remover la clase 'active' de todos los enlaces de navegación
+            navLinks.forEach(link => link.classList.remove('active'));
+            // Añadir la clase 'active' al enlace de la sección actual
+            navLinks[index].classList.add('active');
+
+            // Habilitar/deshabilitar botones de navegación "Anterior" y "Siguiente"
+            prevBtn.disabled = index === 0; // Deshabilita si es la primera sección
+            nextBtn.disabled = index === sections.length - 1; // Deshabilita si es la última sección
+
+            currentSectionIndex = index;
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Desplazar al inicio de la página
+        }
+
+        /**
+         * Navega a la siguiente o anterior sección.
+         * @param {number} direction -1 para anterior, 1 para siguiente.
+         */
+        function navigateSections(direction) {
+            const newIndex = currentSectionIndex + direction;
+            if (newIndex >= 0 && newIndex < sections.length) {
+                showSection(newIndex);
+            }
+        }
+
+        // Asignar eventos de clic a los enlaces del menú lateral
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
+                showSection(index);
+            });
+        });
+
+        /**
+         * Verifica la respuesta de un ejercicio y proporciona retroalimentación.
+         * @param {string} questionName El atributo 'name' del grupo de radios o el 'id' del select/input de texto.
+         * @param {string} correctAnswer La respuesta correcta esperada.
+         * @param {string} feedbackId El 'id' del elemento donde se mostrará la retroalimentación.
+         */
+        function checkExercise(questionName, correctAnswer, feedbackId) {
+            const feedbackElement = document.getElementById(feedbackId);
+            let userAnswer = '';
+
+            // Intentar obtener el valor de los radio buttons
+            const radioButtons = document.querySelectorAll(`input[name="${questionName}"]:checked`);
+            if (radioButtons.length > 0) {
+                userAnswer = radioButtons[0].value;
+            } else {
+                // Si no hay radios, intentar obtener el valor de un elemento select
+                const selectElement = document.getElementById(questionName);
+                if (selectElement && selectElement.tagName === 'SELECT') {
+                    userAnswer = selectElement.value;
+                }
+                // Si no es un select, intentar obtener el valor de un input de texto
+                else {
+                    const textInput = document.getElementById(questionName);
+                    if (textInput && textInput.type === 'text') {
+                        userAnswer = textInput.value.trim().toLowerCase();
+                    }
+                }
+            }
+            
+            // Limpiar clases de retroalimentación previas y el texto
+            feedbackElement.classList.remove('correct', 'incorrect');
+            feedbackElement.textContent = ''; 
+
+            if (userAnswer === '') {
+                feedbackElement.textContent = 'Por favor, selecciona una opción antes de verificar.';
+                feedbackElement.classList.add('incorrect');
+            } else if (userAnswer === correctAnswer) {
+                feedbackElement.textContent = '¡Correcto! Esa es la respuesta adecuada.';
+                feedbackElement.classList.add('correct');
+            } else {
+                // Mostrar la letra de la opción correcta para una retroalimentación más clara
+                let correctOptionLetter = '';
+                if (correctAnswer === 'a') correctOptionLetter = 'A';
+                else if (correctAnswer === 'b') correctOptionLetter = 'B';
+                else if (correctAnswer === 'c') correctOptionLetter = 'C';
+                else if (correctAnswer === 'd') correctOptionLetter = 'D';
+
+                feedbackElement.textContent = `Incorrecto. La respuesta correcta es la opción "${correctOptionLetter}". Repasa la teoría.`;
+                feedbackElement.classList.add('incorrect');
+            }
+        }
+
+        // Inicializar la guía mostrando la primera sección al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection(0);
+        });
+    </script>
+</body>
+</html>
