@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Requisitos</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Barra de Encabezado */
+        .header-bar {
+            background-color: #2c3e50; /* Un tono oscuro de azul/gris */
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alinea elementos al inicio */
+            gap: 15px; /* Espacio entre la imagen y el texto */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .header-bar img {
+            height: 50px; /* Tamaño del logo */
+            width: auto;
+            border-radius: 5px; /* Ligeramente redondeado */
+        }
+
+        .header-bar span {
+            font-size: 1.6em;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        /* Navegación por Pestañas */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-button {
+            background-color: #ecf0f1;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #555;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 8px 8px 0 0;
+            margin: 0 2px;
+            flex-grow: 1; /* Permite que los botones crezcan para ocupar espacio */
+            text-align: center;
+        }
+
+        .tab-button:hover {
+            background-color: #dde1e2;
+        }
+
+        .tab-button.active {
+            background-color: #3498db; /* Azul SENA */
+            color: white;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* Contenido de las Secciones */
+        .tab-content {
+            display: none;
+            padding-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 25px;
+            font-size: 1.4em;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* Componentes Interactivos */
+        .exercise-section {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+        }
+
+        .feedback.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .btn {
+            background-color: #28a745; /* Verde para acciones */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        /* Estilos para Drag & Drop */
+        .drag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .draggable {
+            background-color: #f0f8ff; /* Azul claro */
+            border: 1px solid #aaddff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: grab;
+            min-width: 120px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .drop-target {
+            background-color: #e6f7ff; /* Otro azul claro */
+            border: 2px dashed #99d6ff;
+            padding: 15px;
+            min-height: 80px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-style: italic;
+            color: #666;
+            position: relative; /* Para el texto flotante */
+            min-width: 250px;
+        }
+        
+        .drop-target.hover {
+            background-color: #cceeff;
+            border-color: #3498db;
+        }
+
+        .drop-target .dropped-item {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: default;
+        }
+
+        .drop-target.filled {
+            border: 2px solid #28a745; /* Borde verde cuando está correcto */
+        }
+
+        /* Estilos para Selección Múltiple / Checkboxes */
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2); /* Agrandar un poco el checkbox */
+        }
+
+        /* Estilos para Textareas */
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-height: 80px;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        /* Responsividad básica */
+        @media (max-width: 768px) {
+            .header-bar {
+                flex-direction: column;
+                padding: 10px;
+                text-align: center;
+            }
+            .header-bar span {
+                font-size: 1.2em;
+            }
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .tab-navigation {
+                flex-direction: column;
+            }
+            .tab-button {
+                border-radius: 5px;
+                margin-bottom: 5px;
+            }
+            .drag-container {
+                flex-direction: column;
+            }
+            .drop-target {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Encabezado -->
+    <div class="header-bar">
+        <img src="https://i.postimg.cc/mZzx20W/Logosimbolo-SENA-PRINCIPAL.png" alt="Logo SENA">
+        <span>Centro de Servicios y Gestión Empresarial</span>
+    </div>
+
+    <div class="container">
+        <h1>Laboratorio de Requisitos de Software</h1>
+        <p>Bienvenido al laboratorio interactivo donde aprenderás sobre los conceptos fundamentales, requisitos funcionales y no funcionales en el desarrollo de software. ¡Explora las secciones y pon a prueba tus conocimientos!</p>
+
+        <!-- Navegación por Pestañas -->
+        <div class="tab-navigation">
+            <button class="tab-button active" onclick="openTab('conceptos')">Conceptos Fundamentales</button>
+            <button class="tab-button" onclick="openTab('funcionales')">Requisitos Funcionales</button>
+            <button class="tab-button" onclick="openTab('no-funcionales')">Requisitos No Funcionales</button>
+        </div>
+
+        <!-- Contenido de las Pestañas -->
+        <div id="conceptos" class="tab-content active">
+            <h2>Conceptos Fundamentales</h2>
+            <p>En esta sección, exploraremos los términos clave y las ideas básicas que sustentan la ingeniería de requisitos.</p>
+
+            <div class="exercise-section">
+                <h3>Simulación: Empareja Términos y Definiciones</h3>
+                <p>Arrastra cada término a su definición correcta.</p>
+                <div class="drag-container">
+                    <div class="draggable" draggable="true" id="term-requisito">Requisito</div>
+                    <div class="draggable" draggable="true" id="term-stakeholder">Stakeholder</div>
+                    <div class="draggable" draggable="true" id="term-alcance">Alcance</div>
+                    <div class="draggable" draggable="true" id="term-casodeuso">Caso de Uso</div>
+                </div>
+                <div class="drag-container" style="flex-direction: column; margin-top: 30px;">
+                    <div class="drop-target" data-term="term-stakeholder" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Persona o entidad con interés o que es afectada por un sistema.</span>
+                    </div>
+                    <div class="drop-target" data-term="term-requisito" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Una condición o capacidad que debe cumplir el sistema.</span>
+                    </div>
+                    <div class="drop-target" data-term="term-alcance" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Los límites del proyecto, lo que incluye y lo que no.</span>
+                    </div>
+                    <div class="drop-target" data-term="term-casodeuso" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Una descripción de cómo un usuario interactúa con un sistema para lograr un objetivo.</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="checkDragAndDrop()">Verificar Emparejamiento</button>
+                <div id="feedback-dragdrop" class="feedback"></div>
+            </div>
+
+            <div class="exercise-section">
+                <h3>Ejercicio: ¿Qué hace un Requisito "Bueno"?</h3>
+                <p>Selecciona todas las características que definen un buen requisito.</p>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="goodReq1" value="Claro"> Claro y sin ambigüedades</label>
+                    <label><input type="checkbox" id="goodReq2" value="Completo"> Completo</label>
+                    <label><input type="checkbox" id="goodReq3" value="Medible"> Medible y verificable</label>
+                    <label><input type="checkbox" id="goodReq4" value="Inalcanzable"> Inalcanzable (difícil de implementar)</label>
+                    <label><input type="checkbox" id="goodReq5" value="Priorizable"> Priorizable</label>
+                    <label><input type="checkbox" id="goodReq6" value="Redundante"> Redundante (repetido en varios lugares)</label>
+                </div>
+                <button class="btn" onclick="checkGoodRequirement()">Verificar Características</button>
+                <div id="feedback-goodreq" class="feedback"></div>
+            </div>
+        </div>
+
+        <div id="funcionales" class="tab-content">
+            <h2>Requisitos Funcionales</h2>
+            <p>Los requisitos funcionales describen lo que el sistema debe hacer, es decir, sus funciones y comportamientos.</p>
+
+            <div class="exercise-section">
+                <h3>Simulación: Identifica Requisitos Funcionales</h3>
+                <p>Para un sistema de gestión de pedidos en línea, selecciona las afirmaciones que representan requisitos funcionales.</p>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="rf1" value="1"> El usuario debe poder iniciar sesión con su email y contraseña.</label>
+                    <label><input type="checkbox" id="rf2" value="2"> El sistema debe ser capaz de procesar 100 transacciones por segundo.</label>
+                    <label><input type="checkbox" id="rf3" value="3"> El sistema debe permitir al usuario agregar productos al carrito de compras.</label>
+                    <label><input type="checkbox" id="rf4" value="4"> La interfaz de usuario debe ser intuitiva y fácil de usar.</label>
+                    <label><input type="checkbox" id="rf5" value="5"> El sistema debe enviar una confirmación de pedido por correo electrónico al cliente.</label>
+                    <label><input type="checkbox" id="rf6" value="6"> La base de datos debe estar protegida contra accesos no autorizados.</label>
+                </div>
+                <button class="btn" onclick="checkFunctionalRequirements()">Verificar Identificación</button>
+                <div id="feedback-functional-identify" class="feedback"></div>
+            </div>
+
+            <div class="exercise-section">
+                <h3>Ejercicio: Escribe un Requisito Funcional</h3>
+                <p>Considerando un sistema para una aplicación de reservas de citas médicas, escribe un requisito funcional para la cancelación de citas. Un buen requisito funcional debe ser claro, conciso y describir una acción del sistema.</p>
+                <textarea id="functionalReqWrite" placeholder="Ej: El sistema debe permitir al paciente cancelar una cita existente."></textarea>
+                <button class="btn" onclick="submitFunctionalRequirement()">Enviar Requisito</button>
+                <div id="feedback-functional-write" class="feedback"></div>
+            </div>
+        </div>
+
+        <div id="no-funcionales" class="tab-content">
+            <h2>Requisitos No Funcionales</h2>
+            <p>Los requisitos no funcionales describen cómo el sistema debe funcionar, es decir, sus cualidades y limitaciones.</p>
+
+            <div class="exercise-section">
+                <h3>Simulación: Clasifica Requisitos No Funcionales</h3>
+                <p>Arrastra cada requisito no funcional a su categoría correcta.</p>
+                <div class="drag-container" style="margin-bottom: 20px;">
+                    <div class="draggable" draggable="true" id="nfr-carga">El sistema debe soportar 1000 usuarios concurrentes.</div>
+                    <div class="draggable" draggable="true" id="nfr-seguridad">Los datos del usuario deben ser encriptados en tránsito.</div>
+                    <div class="draggable" draggable="true" id="nfr-usabilidad">La navegación del sitio web debe ser intuitiva.</div>
+                    <div class="draggable" draggable="true" id="nfr-disponibilidad">El sistema debe estar disponible el 99.9% del tiempo.</div>
+                </div>
+                <div class="drag-container" style="flex-direction: column; margin-top: 30px;">
+                    <div class="drop-target" data-category="rendimiento" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Rendimiento (ej. velocidad, capacidad de carga)</span>
+                    </div>
+                    <div class="drop-target" data-category="seguridad" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Seguridad (ej. protección de datos, autenticación)</span>
+                    </div>
+                    <div class="drop-target" data-category="usabilidad" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Usabilidad (ej. facilidad de uso, interfaz)</span>
+                    </div>
+                    <div class="drop-target" data-category="fiabilidad" ondragover="allowDrop(event)" ondrop="drop(event, this)">
+                        <span>Fiabilidad/Disponibilidad (ej. tiempo de actividad, recuperación)</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="checkNFRClassification()">Verificar Clasificación</button>
+                <div id="feedback-nfr-classify" class="feedback"></div>
+            </div>
+
+            <div class="exercise-section">
+                <h3>Ejercicio: Propone Requisitos No Funcionales</h3>
+                <p>Para una aplicación de banca móvil, propone un requisito no funcional de **seguridad** y uno de **rendimiento**.</p>
+                <label for="nfrSecurity">Requisito de Seguridad:</label>
+                <textarea id="nfrSecurity" placeholder="Ej: La aplicación debe requerir autenticación de doble factor para transferencias de fondos."></textarea>
+                <label for="nfrPerformance">Requisito de Rendimiento:</label>
+                <textarea id="nfrPerformance" placeholder="Ej: La aplicación debe cargar el saldo de la cuenta en menos de 2 segundos."></textarea>
+                <button class="btn" onclick="submitNFRProposal()">Enviar Propuesta</button>
+                <div id="feedback-nfr-proposal" class="feedback"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Función para cambiar de pestaña
+        function openTab(tabId) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- Funcionalidad para Conceptos Fundamentales ---
+
+        // Drag & Drop
+        let draggedItem = null;
+
+        document.querySelectorAll('.draggable').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedItem = e.target;
+                e.dataTransfer.setData('text/plain', e.target.id);
+                setTimeout(() => {
+                    e.target.style.opacity = '0.5';
+                }, 0);
+            });
+
+            item.addEventListener('dragend', (e) => {
+                e.target.style.opacity = '1';
+                draggedItem = null;
+            });
+        });
+
+        function allowDrop(event) {
+            event.preventDefault(); // Permite soltar
+            if (event.target.classList.contains('drop-target') && !event.target.querySelector('.dropped-item')) {
+                event.target.classList.add('hover');
+            }
+        }
+
+        document.querySelectorAll('.drop-target').forEach(target => {
+            target.addEventListener('dragleave', (e) => {
+                e.target.classList.remove('hover');
+            });
+        });
+
+
+        function drop(event, target) {
+            event.preventDefault();
+            target.classList.remove('hover');
+            const data = event.dataTransfer.getData('text/plain');
+            const droppedElement = document.getElementById(data);
+
+            if (target.querySelector('.dropped-item')) {
+                // Si ya hay un elemento, lo regresamos a su origen (o a la lista de arrastrables)
+                const existingItem = target.querySelector('.dropped-item');
+                existingItem.remove(); // Remove from target
+                document.querySelector('.drag-container').prepend(existingItem); // Add back to original container (for simplicity)
+                existingItem.classList.remove('dropped-item');
+                existingItem.style.display = 'block'; // Ensure it's visible again
+            }
+
+            if (droppedElement && !target.querySelector('.dropped-item')) {
+                // Solo si el target está vacío
+                droppedElement.classList.add('dropped-item');
+                droppedElement.style.display = 'block'; // Asegura que se muestre en el target
+                target.innerHTML = ''; // Limpia el texto por defecto
+                target.appendChild(droppedElement);
+            }
+        }
+
+        function checkDragAndDrop() {
+            const targets = document.querySelectorAll('.drop-target');
+            let allCorrect = true;
+            targets.forEach(target => {
+                const droppedId = target.querySelector('.dropped-item')?.id;
+                const expectedId = target.dataset.term;
+                
+                if (droppedId === expectedId) {
+                    target.classList.add('filled');
+                    target.classList.remove('error');
+                } else {
+                    allCorrect = false;
+                    target.classList.remove('filled');
+                    target.classList.add('error'); // Opcional: para resaltar errores
+                }
+            });
+
+            const feedbackDiv = document.getElementById('feedback-dragdrop');
+            if (allCorrect) {
+                showFeedback(feedbackDiv, '¡Excelente! Todas las definiciones son correctas.', 'success');
+            } else {
+                showFeedback(feedbackDiv, 'Algunas definiciones no coinciden. ¡Intenta de nuevo!', 'error');
+            }
+        }
+
+        // Ejercicio "Buen Requisito"
+        function checkGoodRequirement() {
+            const correctIds = ['goodReq1', 'goodReq2', 'goodReq3', 'goodReq5']; // SMART
+            let userSelected = [];
+            document.querySelectorAll('#conceptos .checkbox-group input[type="checkbox"]:checked').forEach(checkbox => {
+                userSelected.push(checkbox.id);
+            });
+
+            const feedbackDiv = document.getElementById('feedback-goodreq');
+            let isCorrect = true;
+
+            // Check if all correct ones are selected
+            for (let id of correctIds) {
+                if (!userSelected.includes(id)) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            // Check if any incorrect ones are selected
+            if (isCorrect) {
+                for (let id of userSelected) {
+                    if (!correctIds.includes(id)) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isCorrect && userSelected.length === correctIds.length) { // Ensure no extra or missing selections
+                showFeedback(feedbackDiv, '¡Correcto! Esas son las características clave de un buen requisito (SMART).', 'success');
+            } else {
+                showFeedback(feedbackDiv, 'Hay algunas selecciones incorrectas. Revisa las características de un buen requisito.', 'error');
+            }
+        }
+
+        // --- Funcionalidad para Requisitos Funcionales ---
+
+        // Identifica Funcionales
+        function checkFunctionalRequirements() {
+            const correctRFs = ['rf1', 'rf3', 'rf5']; // IDs correctos
+            let userSelectedRFs = [];
+            document.querySelectorAll('#funcionales .checkbox-group input[type="checkbox"]:checked').forEach(checkbox => {
+                userSelectedRFs.push(checkbox.id);
+            });
+
+            const feedbackDiv = document.getElementById('feedback-functional-identify');
+            let isCorrect = true;
+
+            // Verificar que todos los correctos estén seleccionados
+            for (let id of correctRFs) {
+                if (!userSelectedRFs.includes(id)) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            // Verificar que no se hayan seleccionado incorrectos
+            if (isCorrect) {
+                for (let id of userSelectedRFs) {
+                    if (!correctRFs.includes(id)) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isCorrect && userSelectedRFs.length === correctRFs.length) {
+                showFeedback(feedbackDiv, '¡Excelente! Has identificado correctamente los requisitos funcionales.', 'success');
+            } else {
+                showFeedback(feedbackDiv, 'Revisa tus selecciones. Recuerda que los requisitos funcionales describen lo que el sistema DEBE HACER.', 'error');
+            }
+        }
+
+        // Escribe Requisito Funcional
+        function submitFunctionalRequirement() {
+            const textArea = document.getElementById('functionalReqWrite');
+            const requirementText = textArea.value.trim();
+            const feedbackDiv = document.getElementById('feedback-functional-write');
+
+            if (requirementText.length < 10) {
+                showFeedback(feedbackDiv, 'El requisito es demasiado corto. Intenta ser más específico.', 'error');
+                return;
+            }
+
+            // Un chequeo muy básico para ver si parece un RF
+            if (requirementText.toLowerCase().includes('el sistema debe') || 
+                requirementText.toLowerCase().includes('poder') ||
+                requirementText.toLowerCase().includes('permitir')) {
+                
+                showFeedback(feedbackDiv, '¡Buen intento! Tu requisito parece un requisito funcional bien formulado. Recuerda que deben ser claros, concisos y verificables.', 'success');
+            } else {
+                showFeedback(feedbackDiv, 'Parece que falta la acción principal del sistema. Recuerda que un RF describe una función específica.', 'error');
+            }
+        }
+
+        // --- Funcionalidad para Requisitos No Funcionales ---
+
+        // Clasifica Requisitos No Funcionales (Drag & Drop similar a Conceptos, pero con categorías)
+        function checkNFRClassification() {
+            const nfrMappings = {
+                'nfr-carga': 'rendimiento',
+                'nfr-seguridad': 'seguridad',
+                'nfr-usabilidad': 'usabilidad',
+                'nfr-disponibilidad': 'fiabilidad'
+            };
+            const targets = document.querySelectorAll('#no-funcionales .drop-target');
+            let allCorrect = true;
+
+            targets.forEach(target => {
+                const droppedElement = target.querySelector('.dropped-item');
+                if (!droppedElement) {
+                    allCorrect = false;
+                    return;
+                }
+                const droppedId = droppedElement.id;
+                const expectedCategory = target.dataset.category;
+
+                if (nfrMappings[droppedId] === expectedCategory) {
+                    target.classList.add('filled');
+                    target.classList.remove('error');
+                } else {
+                    allCorrect = false;
+                    target.classList.remove('filled');
+                    target.classList.add('error');
+                }
+            });
+
+            const feedbackDiv = document.getElementById('feedback-nfr-classify');
+            if (allCorrect) {
+                showFeedback(feedbackDiv, '¡Fantástico! Has clasificado correctamente los requisitos no funcionales.', 'success');
+            } else {
+                showFeedback(feedbackDiv, 'Hay algunas clasificaciones incorrectas. Revisa las definiciones de cada categoría de NFR.', 'error');
+            }
+        }
+
+        // Propone Requisitos No Funcionales
+        function submitNFRProposal() {
+            const nfrSecurityText = document.getElementById('nfrSecurity').value.trim();
+            const nfrPerformanceText = document.getElementById('nfrPerformance').value.trim();
+            const feedbackDiv = document.getElementById('feedback-nfr-proposal');
+
+            let securityFeedback = '';
+            let performanceFeedback = '';
+            let overallCorrect = true;
+
+            // Validación para seguridad (muy básica)
+            if (nfrSecurityText.length < 15 || !nfrSecurityText.toLowerCase().includes('seguridad') && !nfrSecurityText.toLowerCase().includes('protección') && !nfrSecurityText.toLowerCase().includes('encriptación')) {
+                securityFeedback = 'El requisito de seguridad es demasiado corto o no menciona conceptos clave de seguridad.';
+                overallCorrect = false;
+            } else {
+                securityFeedback = '✓ Requisito de seguridad parece adecuado.';
+            }
+
+            // Validación para rendimiento (muy básica)
+            if (nfrPerformanceText.length < 15 || !nfrPerformanceText.toLowerCase().includes('velocidad') && !nfrPerformanceText.toLowerCase().includes('tiempo') && !nfrPerformanceText.toLowerCase().includes('segundos') && !nfrPerformanceText.toLowerCase().includes('usuarios concurrentes')) {
+                performanceFeedback = 'El requisito de rendimiento es demasiado corto o no es específico sobre el rendimiento.';
+                overallCorrect = false;
+            } else {
+                performanceFeedback = '✓ Requisito de rendimiento parece adecuado.';
+            }
+
+            if (overallCorrect) {
+                showFeedback(feedbackDiv, `¡Excelente! Has propuesto buenos requisitos no funcionales.\n${securityFeedback}\n${performanceFeedback}`, 'success');
+            } else {
+                showFeedback(feedbackDiv, `¡Sigue practicando! Revisa estos puntos:\n${securityFeedback}\n${performanceFeedback}`, 'error');
+            }
+        }
+
+        // Función para mostrar feedback
+        function showFeedback(element, message, type) {
+            element.textContent = message;
+            element.classList.remove('success', 'error');
+            element.classList.add(type);
+            element.style.display = 'block';
+
+            // Ocultar el feedback después de unos segundos
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 7000);
+        }
+
+        // Asegura que la primera pestaña esté activa al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.tab-navigation .tab-button').click();
+            // Restore draggable items to their original container if page is refreshed mid-drag
+            document.querySelectorAll('.dropped-item').forEach(item => {
+                const originalContainer = document.querySelector('.drag-container'); // Or a specific container if needed
+                originalContainer.appendChild(item);
+                item.classList.remove('dropped-item');
+                item.style.display = 'block';
+            });
+            document.querySelectorAll('.drop-target').forEach(target => {
+                if (target.children.length === 0) {
+                    target.innerHTML = `<span>${target.dataset.category ? target.querySelector('span').textContent : 'Arrastra aquí'}</span>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
