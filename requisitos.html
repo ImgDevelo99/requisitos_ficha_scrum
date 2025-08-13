@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva de Requisitos - SENA</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: #2b569a; /* Azul institucional del SENA */
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        header img {
+            height: 40px; /* Tamaño de la imagen del logo */
+            margin-right: 15px;
+        }
+
+        header span {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Contenedor Principal (sidebar + contenido) */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* Para manejar el scroll interno si es necesario */
+        }
+
+        /* Barra de Navegación Lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #3b73b9; /* Un tono más claro de azul */
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            color: white;
+            overflow-y: auto; /* Scroll si el contenido es largo */
+            flex-shrink: 0; /* No se encoge */
+        }
+
+        .sidebar h2 {
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #5a94d4; /* Color al pasar el mouse o activo */
+            transform: translateX(5px);
+        }
+
+        /* Contenido Principal de la Lección */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto; /* Permite scroll solo en el área de contenido */
+            background-color: #ffffff;
+        }
+
+        .lesson-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .lesson-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .lesson-section h3 {
+            color: #2b569a;
+            font-size: 1.8em;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-section h4 {
+            color: #0056b3;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .lesson-section ul {
+            list-style: disc;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-section li {
+            margin-bottom: 8px;
+        }
+
+        .lesson-section strong {
+            color: #0056b3;
+        }
+
+        /* Demostraciones Visuales (sin imágenes) */
+        .visual-demo {
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            overflow-x: auto; /* Para código o diagramas largos */
+        }
+        .visual-demo pre {
+            margin: 0;
+            padding: 0;
+            white-space: pre; /* Asegura que el formato del texto preformateado se mantenga */
+        }
+        .visual-demo .box {
+            border: 1px solid #2b569a;
+            padding: 5px 10px;
+            display: inline-block;
+            margin: 5px;
+            background-color: #e6f0ff;
+            color: #1a3a6b;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        .visual-demo .arrow {
+            display: inline-block;
+            margin: 0 10px;
+            color: #008000;
+            font-weight: bold;
+        }
+        .visual-demo .example {
+            background-color: #e8f5e9; /* Light green for good examples */
+            border-left: 5px solid #4CAF50;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #388E3C;
+        }
+        .visual-demo .bad-example {
+            background-color: #ffebee; /* Light red for bad examples */
+            border-left: 5px solid #F44336;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #D32F2F;
+        }
+
+
+        /* Ejercicios Prácticos */
+        .exercise-section {
+            background-color: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+
+        .exercise-section .question {
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .exercise-section input[type="text"],
+        .exercise-section input[type="radio"] {
+            margin-right: 8px;
+            margin-bottom: 10px;
+        }
+
+        .exercise-section label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .exercise-section button {
+            background-color: #28a745; /* Botón de éxito */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .exercise-section button:hover {
+            background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none; /* Oculto por defecto */
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Navegación de Lecciones (botones Siguiente/Anterior) */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .lesson-navigation button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .lesson-navigation button:hover {
+            background-color: #0056b3;
+        }
+
+        .lesson-navigation button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.postimg.cc/mZzx20gW/Logosimbolo-SENA-PRINCIPAL.png" alt="Logo Sena">
+        <span>Centro de Servicios y Gestión Empresarial</span>
+        <a href="actividad1.html" id="btn-requisitos" style="
+        margin-right: 20px;
+        background-color: #28a745;
+        color: white;
+        padding: 10px 22px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1em;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        cursor: pointer;
+        ">Actividad # 1
+        </a>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <h2>Guía de Requisitos</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" data-lesson-id="0" class="active">1. Conceptos Fundamentales</a></li>
+                    <li><a href="#" data-lesson-id="1">2. Requisitos Funcionales (RF)</a></li>
+                    <li><a href="#" data-lesson-id="2">3. Requisitos No Funcionales (RNF)</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <!-- El contenido de la lección se cargará aquí por JavaScript -->
+            <div id="lessonContent"></div>
+
+            <div class="lesson-navigation">
+                <button id="prevBtn" disabled>← Anterior</button>
+                <button id="nextBtn">Siguiente →</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Array de objetos que contiene todas las lecciones y su contenido
+        const lessons = [
+            {
+                id: 0,
+                title: "1. Conceptos Fundamentales de Requisitos",
+                theory: `
+                    <p>En el mundo del desarrollo de software y proyectos, antes de construir cualquier cosa, necesitamos saber <strong>qué</strong> vamos a construir. ¡Ahí es donde entran los requisitos!</p>
+                    <p>Un <strong>requisito</strong> es una condición o capacidad que un sistema debe poseer, o una propiedad que debe exhibir, para resolver un problema o lograr un objetivo. Es, en esencia, una necesidad documentada que debe ser satisfecha por el producto o servicio que se va a desarrollar.</p>
+                    <h4>¿Por qué son tan importantes?</h4>
+                    <ul>
+                        <li><strong>Claridad y Comunicación:</strong> Sirven como un puente entre lo que el cliente quiere y lo que el equipo de desarrollo construirá. Ayudan a que todos los involucrados (clientes, desarrolladores, diseñadores, testers) entiendan lo mismo.</li>
+                        <li><strong>Evitar Errores y Retrabajo:</strong> Si los requisitos son claros desde el principio, se reduce la probabilidad de construir algo incorrecto, lo que ahorra tiempo y dinero en correcciones futuras.</li>
+                        <li><strong>Control del Alcance:</strong> Definen los límites del proyecto. Ayudan a evitar la "deriva del alcance" (scope creep), que es cuando se añaden funcionalidades no planeadas, haciendo que el proyecto se alargue o exceda el presupuesto.</li>
+                        <li><strong>Base para Pruebas:</strong> Los requisitos son la base para crear pruebas. Si un requisito dice que "el usuario debe poder iniciar sesión", las pruebas verificarán que esta función realmente opere.</li>
+                    </ul>
+                    <p>En las siguientes lecciones, exploraremos los dos tipos principales de requisitos: Funcionales y No Funcionales.</p>
+                `,
+                visualDemo: `
+                    <p>Imagina que los requisitos son como el plano de una casa:</p>
+                    <div class="visual-demo">
+                        <pre>
++-------------------+      +-----------------+      +---------------------+      +----------------+
+| Necesidad Cliente | ---->|   Requisito/    | ---->|  Desarrollo/Diseño  | ---->|  Producto Final |
+|  (¿Qué quiero?)   |      | Especificación  |      |  (¿Cómo lo hacemos?)|      |   (La solución)  |
++-------------------+      +-----------------+      +---------------------+      +----------------+
+      Ejemplo:              "El sistema debe   Ejemplo:                     Ejemplo:
+      "Necesito una         permitir al usuario  "Crear interfaz,   "Aplicación de Pedidos
+       forma fácil de       ordenar comida en    programar lógica,   en Línea funcionando"
+       pedir comida        línea."              configurar base."
+       a domicilio."
+                        </pre>
+                        <p>Sin un requisito claro, el desarrollo podría desviarse:</p>
+                        <div class="bad-example">
+                            <strong>Requisito Ambiguo:</strong> "El sistema debe ser fácil de usar."
+                            <br><em>¿Qué significa "fácil de usar"? Para alguien puede ser pocos clics, para otro, un diseño muy colorido. Genera confusiones.</em>
+                        </div>
+                        <div class="example">
+                            <strong>Requisito Claro:</strong> "El sistema debe permitir al usuario completar un pedido en menos de 5 clics desde la página principal."
+                            <br><em>Esto es específico y se puede medir.</em>
+                        </div>
+                    </div>
+                `,
+                exercise: {
+                    type: 'multiple-choice',
+                    question: "¿Cuál es el propósito principal de los requisitos en un proyecto de software?",
+                    options: [
+                        "A) Hacer el software más rápido de desarrollar.",
+                        "B) Asegurar que el producto final satisfaga las necesidades del usuario.",
+                        "C) Complicar el proceso de desarrollo.",
+                        "D) Diseñar la interfaz de usuario directamente."
+                    ],
+                    answer: "B",
+                    feedbackCorrect: "¡Correcto! Los requisitos garantizan que lo que se construye es lo que realmente se necesita.",
+                    feedbackIncorrect: "Incorrecto. Los requisitos son fundamentales para alinear el producto con las expectativas y necesidades del cliente."
+                }
+            },
+            {
+                id: 1,
+                title: "2. Requisitos Funcionales (RF)",
+                theory: `
+                    <p>Los <strong>Requisitos Funcionales (RF)</strong> describen lo que el sistema <em>debe hacer</em>. Son las funciones o características específicas que el sistema entregará a sus usuarios.</p>
+                    <p>En otras palabras, definen el comportamiento del sistema, detallando las operaciones que el sistema realizará y las respuestas del sistema a entradas particulares.</p>
+                    <h4>Características de un buen Requisito Funcional:</h4>
+                    <ul>
+                        <li><strong>Verificable:</strong> Debe ser posible comprobar si el sistema cumple o no con el requisito.</li>
+                        <li><strong>Atómico:</strong> Debe ser una única declaración de una capacidad del sistema.</li>
+                        <li><strong>Unívoco (no ambiguo):</strong> Debe tener una única interpretación para todos.</li>
+                        <li><strong>Consistente:</strong> No debe contradecir otros requisitos.</li>
+                    </ul>
+                    <p>Los requisitos funcionales suelen comenzar con frases como "El sistema debe...", "El usuario podrá...", "El sistema permitirá...", etc.</p>
+                `,
+                visualDemo: `
+                    <p>Pensemos en un <strong>Sistema de Gestión de Biblioteca</strong>:</p>
+                    <div class="visual-demo">
+                        <div class="example">
+                            <strong>RF 1:</strong> "El sistema DEBE permitir a los usuarios buscar libros por título, autor o ISBN."
+                            <br><em>(Define una acción específica que el sistema realiza.)</em>
+                        </div>
+                        <div class="example">
+                            <strong>RF 2:</strong> "El usuario DEBE poder iniciar sesión utilizando su nombre de usuario y contraseña."
+                            <br><em>(Describe una interacción clave del usuario con el sistema.)</em>
+                        </div>
+                        <div class="example">
+                            <strong>RF 3:</strong> "El sistema DEBE generar un reporte mensual de préstamos de libros."
+                            <br><em>(Indica una funcionalidad de generación de información.)</em>
+                        </div>
+                        <div class="bad-example">
+                            <strong>NO es un RF:</strong> "El sistema debe ser fácil de usar."
+                            <br><em>(Esto es una cualidad, no una función específica. Es un Requisito No Funcional.)</em>
+                        </div>
+                        <div class="bad-example">
+                            <strong>NO es un RF:</strong> "La base de datos debe almacenar la información de los libros."
+                            <br><em>(Aunque es necesario, es una decisión de implementación interna, no una función directa para el usuario.)</em>
+                        </div>
+                        <p>Los RF describen lo que el sistema <strong>hace</strong>.</p>
+                    </div>
+                `,
+                exercise: {
+                    type: 'multiple-choice',
+                    question: "¿Cuál de las siguientes afirmaciones describe mejor un Requisito Funcional?",
+                    options: [
+                        "A) El sistema debe ser capaz de procesar 100 transacciones por segundo.",
+                        "B) El sistema debe permitir al usuario agregar productos a un carrito de compras.",
+                        "C) La interfaz de usuario debe ser atractiva y moderna.",
+                        "D) El sistema debe estar disponible el 99.9% del tiempo."
+                    ],
+                    answer: "B",
+                    feedbackCorrect: "¡Excelente! Agregar productos a un carrito es una acción o función específica que el sistema debe realizar.",
+                    feedbackIncorrect: "Incorrecto. Los requisitos funcionales describen lo que el sistema *hace*, no cómo *funciona* o qué tan *bien* lo hace (esas son características de los Requisitos No Funcionales)."
+                }
+            },
+            {
+                id: 2,
+                title: "3. Requisitos No Funcionales (RNF)",
+                theory: `
+                    <p>Los <strong>Requisitos No Funcionales (RNF)</strong> describen <em>cómo</em> el sistema debe funcionar, es decir, las cualidades o características del sistema. No se refieren a una acción específica, sino a propiedades como el rendimiento, la seguridad, la usabilidad, la fiabilidad, la escalabilidad, etc.</p>
+                    <p>Aunque no son "funciones" en sí mismas, son cruciales porque afectan la calidad del sistema, la experiencia del usuario y la satisfacción del cliente. Un sistema puede hacer todo lo que se le pide (RF), pero si es lento (RNF de rendimiento), inseguro (RNF de seguridad) o difícil de usar (RNF de usabilidad), nadie querrá usarlo.</p>
+                    <h4>Categorías comunes de RNF:</h4>
+                    <ul>
+                        <li><strong>Rendimiento:</strong> Qué tan rápido y eficiente es el sistema (Ej: tiempo de respuesta, capacidad de usuarios concurrentes).</li>
+                        <li><strong>Seguridad:</strong> Protección de datos y accesos (Ej: cifrado, autenticación, autorización).</li>
+                        <li><strong>Usabilidad:</strong> Qué tan fácil es para el usuario aprender y usar el sistema (Ej: intuitividad, claridad de la interfaz).</li>
+                        <li><strong>Fiabilidad/Disponibilidad:</strong> Qué tan consistente y disponible es el sistema (Ej: tiempo de actividad, recuperación ante fallos).</li>
+                        <li><strong>Escalabilidad:</strong> Capacidad del sistema para manejar un crecimiento en la carga de trabajo (Ej: aumento de usuarios, datos).</li>
+                        <li><strong>Mantenibilidad:</strong> Qué tan fácil es modificar y mantener el sistema a lo largo del tiempo.</li>
+                        <li><strong>Portabilidad:</strong> Capacidad de operar en diferentes entornos (Ej: navegadores, sistemas operativos).</li>
+                    </ul>
+                `,
+                visualDemo: `
+                    <p>Pensemos en una <strong>Aplicación de Banca Móvil</strong>:</p>
+                    <div class="visual-demo">
+                        <div class="example" style="border-color: #2196F3; background-color: #e3f2fd;">
+                            <strong>RNF (Rendimiento):</strong> "La aplicación DEBE procesar un pago en menos de 2 segundos."
+                            <br><em>(Velocidad de operación.)</em>
+                        </div>
+                        <div class="example" style="border-color: #FFC107; background-color: #fffde7;">
+                            <strong>RNF (Seguridad):</strong> "Todas las transacciones financieras DEBEN ser cifradas con un algoritmo AES-256."
+                            <br><em>(Protección de información.)</em>
+                        </div>
+                        <div class="example" style="border-color: #9C27B0; background-color: #f3e5f5;">
+                            <strong>RNF (Usabilidad):</strong> "La interfaz DEBE ser intuitiva para usuarios sin experiencia previa en banca móvil."
+                            <br><em>(Facilidad de uso.)</em>
+                        </div>
+                        <div class="example" style="border-color: #00BCD4; background-color: #e0f7fa;">
+                            <strong>RNF (Disponibilidad):</strong> "La aplicación DEBE estar disponible el 99.9% del tiempo."
+                            <br><em>(Tiempo que el sistema está operativo.)</em>
+                        </div>
+                        <div class="bad-example">
+                            <strong>NO es un RNF:</strong> "La aplicación debe permitir transferir dinero entre cuentas."
+                            <br><em>(Esto es una función específica del sistema, un Requisito Funcional.)</em>
+                        </div>
+                        <p>Los RNF describen qué tan bien el sistema <strong>funciona</strong>.</p>
+                    </div>
+                `,
+                exercise: {
+                    type: 'multiple-choice',
+                    question: "¿Cuál de los siguientes es un Requisito NO Funcional?",
+                    options: [
+                        "A) El sistema debe enviar una notificación por correo electrónico cuando se reciba un nuevo mensaje.",
+                        "B) El sistema debe permitir a los usuarios subir imágenes a sus perfiles.",
+                        "C) El sistema debe ser capaz de manejar 500 usuarios concurrentes sin degradación del rendimiento.",
+                        "D) El sistema debe registrar todas las acciones de los usuarios en un historial."
+                    ],
+                    answer: "C",
+                    feedbackCorrect: "¡Excelente! La capacidad de manejar 500 usuarios concurrentes sin degradación es una medida de rendimiento, un RNF.",
+                    feedbackIncorrect: "Incorrecto. Los requisitos no funcionales se refieren a las cualidades o atributos del sistema, no a las funciones específicas que realiza."
+                }
+            }
+        ];
+
+        let currentLessonIndex = 0;
+        const lessonContentDiv = document.getElementById('lessonContent');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+        /**
+         * Carga el contenido de una lección específica en el área principal.
+         * @param {number} index - El índice de la lección a cargar en el array `lessons`.
+         */
+        function loadLesson(index) {
+            // Validar que el índice esté dentro del rango
+            if (index < 0 || index >= lessons.length) {
+                return; 
+            }
+
+            currentLessonIndex = index;
+            const lesson = lessons[currentLessonIndex];
+
+            // Limpiar el contenido anterior del área de lecciones
+            lessonContentDiv.innerHTML = '';
+
+            // Crear el elemento div para la sección de la lección
+            const lessonSection = document.createElement('div');
+            lessonSection.classList.add('lesson-section');
+
+            // Rellenar el HTML de la lección usando template literals
+            lessonSection.innerHTML = `
+                <h3>${lesson.title}</h3>
+                <h4>Explicación Teórica</h4>
+                ${lesson.theory}
+                <h4>Demostración Visual</h4>
+                ${lesson.visualDemo}
+                <div class="exercise-section">
+                    <h4>Ejercicio Práctico</h4>
+                    <div class="question">${lesson.exercise.question}</div>
+                    <div class="options" id="exerciseOptions"></div>
+                    <button onclick="checkAnswer()">Comprobar Respuesta</button>
+                    <div class="feedback" id="feedbackMessage"></div>
+                </div>
+            `;
+            // Añadir la sección de la lección al DOM
+            lessonContentDiv.appendChild(lessonSection);
+
+            // Cargar las opciones del ejercicio dinámicamente
+            const exerciseOptionsDiv = document.getElementById('exerciseOptions');
+            if (lesson.exercise.type === 'multiple-choice') {
+                lesson.exercise.options.forEach((option, i) => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = 'exerciseQuestion'; // Nombre para agrupar los radio buttons
+                    input.value = option.charAt(0); // El valor será 'A', 'B', 'C', etc.
+                    input.id = `option${i}`;
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(option)); // Texto de la opción
+                    exerciseOptionsDiv.appendChild(label);
+                });
+            } 
+            // Si en el futuro se desea un ejercicio de texto, se podría añadir:
+            // else if (lesson.exercise.type === 'text') {
+            //     const input = document.createElement('input');
+            //     input.type = 'text';
+            //     input.id = 'exerciseInput';
+            //     input.placeholder = 'Escribe tu respuesta aquí...';
+            //     exerciseOptionsDiv.appendChild(input);
+            // }
+
+            // Actualizar el estado de los botones de navegación
+            updateNavigationButtons();
+            // Actualizar el enlace activo en la barra lateral
+            updateSidebarActiveLink();
+        }
+
+        /**
+         * Actualiza el estado de los botones "Anterior" y "Siguiente"
+         * para habilitarlos o deshabilitarlos según la lección actual.
+         */
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentLessonIndex === 0;
+            nextBtn.disabled = currentLessonIndex === lessons.length - 1;
+        }
+
+        /**
+         * Actualiza la clase 'active' en los enlaces de la barra lateral
+         * para resaltar la lección actualmente visible.
+         */
+        function updateSidebarActiveLink() {
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active'); // Remover 'active' de todos
+                if (parseInt(link.dataset.lessonId) === currentLessonIndex) {
+                    link.classList.add('active'); // Añadir 'active' al actual
+                }
+            });
+        }
+
+        /**
+         * Comprueba la respuesta del usuario para el ejercicio actual
+         * y muestra retroalimentación.
+         */
+        function checkAnswer() {
+            const lesson = lessons[currentLessonIndex];
+            const feedbackDiv = document.getElementById('feedbackMessage');
+            
+            // Limpiar clases de feedback anteriores y ocultar
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            feedbackDiv.style.display = 'none';
+
+            let userAnswer;
+            if (lesson.exercise.type === 'multiple-choice') {
+                const selectedOption = document.querySelector('input[name="exerciseQuestion"]:checked');
+                userAnswer = selectedOption ? selectedOption.value : ''; // Obtener el valor de la opción seleccionada
+            } 
+            // Si hubiera ejercicio de texto:
+            // else if (lesson.exercise.type === 'text') {
+            //     userAnswer = document.getElementById('exerciseInput').value.trim();
+            // }
+
+            // Comparar la respuesta del usuario con la respuesta correcta (ignorando mayúsculas/minúsculas)
+            if (userAnswer.toUpperCase() === lesson.exercise.answer.toUpperCase()) {
+                feedbackDiv.classList.add('correct');
+                feedbackDiv.textContent = lesson.exercise.feedbackCorrect;
+            } else {
+                feedbackDiv.classList.add('incorrect');
+                feedbackDiv.textContent = lesson.exercise.feedbackIncorrect;
+            }
+            feedbackDiv.style.display = 'block'; // Mostrar el mensaje de feedback
+        }
+
+        // --- Event Listeners ---
+
+        // Navegación secuencial con botones "Anterior" y "Siguiente"
+        prevBtn.addEventListener('click', () => loadLesson(currentLessonIndex - 1));
+        nextBtn.addEventListener('click', () => loadLesson(currentLessonIndex + 1));
+
+        // Navegación directa a través de los enlaces de la barra lateral
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Evitar el comportamiento predeterminado del enlace (recargar la página)
+                const lessonId = parseInt(e.target.dataset.lessonId); // Obtener el ID de la lección del atributo data
+                loadLesson(lessonId); // Cargar la lección correspondiente
+            });
+        });
+
+        // Cargar la primera lección al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLesson(0); // Iniciar con la primera lección (índice 0)
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Actividad: Diseñando el avión perfecto</title>
+  <style>
+    :root{
+      --bg:#f7f7fb;
+      --fg:#0f172a;
+      --muted:#475569;
+      --card:#ffffff;
+      --accent:#2563eb;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;color:var(--fg);background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    .container{max-width:1000px;margin:32px auto;padding:0 16px}
+    header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .title{font-size:clamp(20px,4vw,34px);font-weight:800;letter-spacing:-.02em}
+    .sub{color:var(--muted);font-size:14px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+    h2{margin:0 0 12px 0;font-size:22px}
+    h3{margin:14px 0 8px 0;font-size:18px}
+    ol{padding-left:20px}
+    .grid{display:grid;gap:16px}
+    @media (min-width:820px){ .grid-2{grid-template-columns:1fr 1fr} }
+    .badge{display:inline-block;background:#eef2ff;color:#1e40af;border:1px solid #c7d2fe;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600}
+    .meta{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+    .meta .field{display:flex;gap:8px;align-items:center}
+    .meta input{width:100%;padding:8px;border-radius:10px;border:1px solid var(--border);background:#fff}
+    .note{font-size:13px;color:var(--muted)}
+    textarea, input[type="text"]{width:100%;padding:10px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    textarea{min-height:110px;resize:vertical}
+    .rows{display:grid;gap:10px}
+    .rows .row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center}
+    .rows .row input[type="text"]{height:38px}
+    .checklist{display:grid;gap:8px}
+    .checklist label{display:flex;gap:10px;align-items:flex-start}
+    .rubric table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+    .rubric th, .rubric td{border:1px solid var(--border);padding:10px;vertical-align:top}
+    .rubric th{background:#fafafa;text-align:left}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:8px}
+    .btn{border:none;background:var(--accent);color:#fff;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#e2e8f0;color:#0f172a}
+    footer{margin-top:24px;color:var(--muted);font-size:12px;text-align:center}
+    @media print{
+      body{background:#fff}
+      .actions{display:none !important}
+      .card{break-inside:avoid}
+      a{color:inherit;text-decoration:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="badge">Taller de Requisitos</div>
+        <div class="title">Actividad: Diseñando el avión perfecto ✈️</div>
+        <div class="sub">Aplicación práctica de requisitos funcionales y no funcionales</div>
+      </div>
+      <div class="actions">
+        <button class="btn secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Ir arriba</button>
+        <button class="btn" onclick="window.print()">Imprimir</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Datos del grupo</h2>
+      <div class="meta">
+        <div class="field"><span>Curso/Grupo:</span><input type="text" placeholder="Ej: ADSO 2025 - Grupo 3"></div>
+        <div class="field"><span>Fecha:</span><input type="text" placeholder="AAAA-MM-DD"></div>
+        <div class="field"><span>Integrantes:</span><input type="text" placeholder="Nombres completos"></div>
+        <div class="field"><span>Cliente (rol):</span><input type="text" placeholder="Nombre del estudiante que hace de cliente"></div>
+      </div>
+      <p class="note">Rol: 1 estudiante actúa como <strong>cliente</strong>; los demás son el <strong>equipo de desarrollo</strong>.</p>
+    </section>
+
+    <section class="card">
+      <h2>Objetivo</h2>
+      <p>
+        Identificar y diferenciar <strong>requisitos funcionales</strong> (lo que el sistema/avión debe hacer)
+        y <strong>requisitos no funcionales</strong> (cómo debe ser o comportarse), a través del diseño y construcción de un avión de papel según especificaciones del cliente.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Instrucciones</h2>
+      <ol>
+        <li><strong>Asignar roles:</strong> el grupo elige a una persona como <em>cliente</em>; los demás son el equipo de desarrollo.</li>
+        <li><strong>Levantar requisitos no funcionales (características):</strong> el equipo entrevista al cliente y registra características del avión (tamaño, color, materiales, estilo, peso estimado, etc.).</li>
+        <li><strong>Levantar requisitos funcionales (comportamiento):</strong> el cliente explica lo que el avión debe lograr (distancia de vuelo, estabilidad, giros, planeo lento, acrobacias, etc.).</li>
+        <li><strong>Construcción:</strong> el equipo fabrica el avión de papel respetando los requisitos acordados.</li>
+        <li><strong>Presentación y prueba:</strong> el grupo expone cuáles requisitos cumplieron y realiza un vuelo de prueba.</li>
+      </ol>
+    </section>
+
+    <section class="grid grid-2">
+      <div class="card">
+        <h3>Requisitos no funcionales (características del avión)</h3>
+        <p class="note">Ejemplos: tamaño A4, dobleces limpios, peso ligero, estética minimalista, color definido.</p>
+        <div class="rows">
+          <div class="row"><span>1.</span><input type="text" placeholder="Característica / criterio medible"></div>
+          <div class="row"><span>2.</span><input type="text" placeholder="Característica / criterio medible"></div>
+          <div class="row"><span>3.</span><input type="text" placeholder="Característica / criterio medible"></div>
+          <div class="row"><span>4.</span><input type="text" placeholder="Característica / criterio medible"></div>
+          <div class="row"><span>5.</span><input type="text" placeholder="Característica / criterio medible"></div>
+          <div class="row"><span>6.</span><input type="text" placeholder="Característica / criterio medible"></div>
+        </div>
+        <h4>Definición de criterios de aceptación</h4>
+        <textarea placeholder="¿Cómo mediremos que se cumple cada característica?"></textarea>
+      </div>
+
+      <div class="card">
+        <h3>Requisitos funcionales (lo que debe hacer el avión)</h3>
+        <p class="note">Ejemplos: volar &gt; 6 metros, mantener trayectoria recta, realizar un giro, planear &gt; 3 segundos.</p>
+        <div class="rows">
+          <div class="row"><span>1.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+          <div class="row"><span>2.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+          <div class="row"><span>3.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+          <div class="row"><span>4.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+          <div class="row"><span>5.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+          <div class="row"><span>6.</span><input type="text" placeholder="Función/Comportamiento + criterio medible"></div>
+        </div>
+        <h4>Escenarios de prueba</h4>
+        <textarea placeholder="Describan cómo probarán cada función"></textarea>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Construcción del avión</h2>
+      <div class="checklist">
+        <label><input type="checkbox"> Materiales listos (papel, marcadores, regla, cinta si procede)</label>
+        <label><input type="checkbox"> Boceto rápido del diseño (opcional)</label>
+        <label><input type="checkbox"> Construcción siguiendo los requisitos acordados</label>
+        <label><input type="checkbox"> Verificación interna (equipo revisa requisitos antes de la prueba)</label>
+      </div>
+      <h3 style="margin-top:12px;">Notas del equipo</h3>
+      <textarea placeholder="Decisiones de diseño, cambios acordados con el cliente, consideraciones finales..."></textarea>
+    </section>
+
+    <section class="card">
+      <h2>Presentación y prueba (Validación y Verificación)</h2>
+      <p>
+        En esta fase, el grupo actúa como si estuviera entregando el producto final a un cliente real.
+        El objetivo es <strong>validar</strong> que el avión cumple lo que el cliente pidió
+        y <strong>verificar</strong> que las especificaciones se cumplan en la práctica.
+      </p>
+
+      <h3>Presentación (Validación)</h3>
+      <ul>
+        <li>Mostrar el avión terminado al cliente y a la clase.</li>
+        <li>Explicar los <strong>requisitos funcionales</strong> y <strong>no funcionales</strong> definidos.</li>
+        <li>Indicar cómo se implementó cada requisito.</li>
+        <li>Justificar cambios o ajustes realizados durante la construcción.</li>
+      </ul>
+
+      <h3>Prueba (Verificación)</h3>
+      <ul>
+        <li>Realizar vuelos de prueba del avión de papel.</li>
+        <li>Medir la <strong>distancia de vuelo</strong> (en metros).</li>
+        <li>Medir el <strong>tiempo de planeo</strong> (en segundos).</li>
+        <li>Observar y registrar si realiza giros, acrobacias o se mantiene estable según lo solicitado.</li>
+        <li>Comparar resultados con los requisitos definidos para confirmar si se cumplieron.</li>
+      </ul>
+
+      <h3>Registro de resultados</h3>
+      <div class="rows">
+        <div class="row"><span>Distancia de vuelo (m):</span><input type="text" placeholder="Promedio de 3 intentos"></div>
+        <div class="row"><span>Tiempo de planeo (s):</span><input type="text" placeholder="Promedio de 3 intentos"></div>
+        <div class="row"><span>Observaciones:</span><input type="text" placeholder="Estabilidad, trayectoria, giros, etc."></div>
+      </div>
+    </section>
+
+    <section class="card rubric">
+      <h2>Criterios de evaluación (rúbrica rápida)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>Excelente (3)</th>
+            <th>Adecuado (2)</th>
+            <th>Básico (1)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Claridad de requisitos <em>no funcionales</em></td>
+            <td>Específicos y medibles; cubren materiales/estética/rendimiento</td>
+            <td>Algunos medibles; faltan detalles</td>
+            <td>Vagos o no medibles</td>
+          </tr>
+          <tr>
+            <td>Claridad de requisitos <em>funcionales</em></td>
+            <td>Definen comportamientos con métricas y escenarios</td>
+            <td>Definen comportamientos sin todas las métricas</td>
+            <td>Poco claros o sin comportamiento definido</td>
+          </tr>
+          <tr>
+            <td>Construcción y cumplimiento</td>
+            <td>Sigue fielmente requisitos; alta calidad de acabado</td>
+            <td>Cumple la mayoría; acabado correcto</td>
+            <td>Incumple varios; acabado deficiente</td>
+          </tr>
+          <tr>
+            <td>Presentación y prueba</td>
+            <td>Explica trazabilidad requisito→prueba; registra resultados</td>
+            <td>Explica de forma general; registra algunos resultados</td>
+            <td>Explicación mínima; sin evidencias</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      Docente: __________________________ • Asignatura: Requisitos de Software • Duración sugerida: 40–60 min
+    </footer>
+  </div>
+</body>
+</html>
